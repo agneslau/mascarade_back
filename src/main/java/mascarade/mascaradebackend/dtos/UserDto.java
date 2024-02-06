@@ -5,7 +5,6 @@ import jakarta.persistence.Enumerated;
 import lombok.Builder;
 import mascarade.mascaradebackend.entities.User;
 import mascarade.mascaradebackend.security.Role;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 @Builder
 public record UserDto(

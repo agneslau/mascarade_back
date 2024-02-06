@@ -2,9 +2,7 @@ package mascarade.mascaradebackend.entities;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
 import mascarade.mascaradebackend.dtos.UserDto;
 import mascarade.mascaradebackend.security.Role;
 import org.bson.types.ObjectId;
@@ -17,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 @Document(collection = "User")
 @Builder
