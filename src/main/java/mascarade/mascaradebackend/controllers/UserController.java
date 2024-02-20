@@ -6,6 +6,7 @@ import mascarade.mascaradebackend.security.Role;
 import mascarade.mascaradebackend.services.impl.UserServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/v1/users")
+@CrossOrigin
 public class UserController {
 
     private final UserServiceImpl userService;
@@ -26,19 +29,8 @@ public class UserController {
         this.userService = userService;
     }
 
-
-    @GetMapping("/test")
-    public ResponseEntity<String> test(){
-        return ResponseEntity.ok("Hello World");
-    }
-
-    @GetMapping("/test2")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<String> test2(){
-        return ResponseEntity.ok("Hello World");
-    }
-
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<List<UserDto>> getUsers(){
         return ResponseEntity.ok(userService.findAll());
     }
@@ -56,7 +48,7 @@ public class UserController {
             return Optional.of(UserDto.builder()
                     .email(params.get("email"))
                     .name(params.get("name"))
-                    .role(determineRole(params.get("role")))
+                    .roles(determineRoles(params.get("roles")))
                     .build());
         }
     }
@@ -71,5 +63,11 @@ public class UserController {
         } else {
             throw new IllegalArgumentException("Role not found");
         }
+    }
+
+    private List<Role> determineRoles(String roles) {
+        return Stream.of(roles.split(","))
+                .map(this::determineRole)
+                .toList();
     }
 }
