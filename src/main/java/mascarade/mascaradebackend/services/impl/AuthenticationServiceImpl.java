@@ -14,6 +14,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -28,7 +30,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .name(registerRequest.getName())
                 .email(registerRequest.getEmail())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
-                .role(Role.ROLE_ADMIN)
+                .roles(registerRequest.getRoles())
                 .build();
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);
@@ -49,6 +51,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
+                .name(user.name())
+                .email(user.email())
+                .roles(user.roles())
                 .token(jwtToken)
                 .build();
 

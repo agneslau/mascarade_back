@@ -3,6 +3,7 @@ package mascarade.mascaradebackend.entities;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Builder;
+import lombok.Getter;
 import mascarade.mascaradebackend.dtos.UserDto;
 import mascarade.mascaradebackend.security.Role;
 import org.bson.types.ObjectId;
@@ -28,9 +29,8 @@ public record User(
         @Field("name")
         String name,
 
-        @Enumerated(EnumType.STRING)
-        @Field("role")
-        Role role,
+        @Field("roles")
+        List<Role> roles,
 
         @Field("password")
         String password
@@ -39,14 +39,16 @@ public record User(
                 return User.builder()
                         .email(userDto.email())
                         .name(userDto.name())
-                        .role(userDto.role())
+                        .roles(userDto.roles())
                         .password(userDto.password())
                         .build();
         }
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
-                return List.of(new SimpleGrantedAuthority(role().name()));
+                return roles.stream()
+                        .map(role -> new SimpleGrantedAuthority(role.name()))
+                        .toList();
         }
 
         @Override
