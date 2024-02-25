@@ -35,14 +35,22 @@ public class UserController {
         return ResponseEntity.ok(userService.findAll());
     }
 
-    @PostMapping("/users")
-    public ResponseEntity<UserDto> insertUser(@RequestBody Map<String, String> params){
-        return createUserDto(params).map(userDto -> ResponseEntity.ok(userService.insertUser(userDto)))
-                .orElseGet(() -> ResponseEntity.badRequest().build());
+    @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+        //TODO: gérer la duplication d'email
+        return ResponseEntity.ok(userService.insertUser(userDto));
     }
 
+    /*@PutMapping
+    public ResponseEntity<UserDto> updateUser(@RequestBody Map<String, String> params){
+        return createUserDto(params)
+                .map(userDto -> ResponseEntity.ok(userService.updateUser(userDto)))
+                .orElseGet(() -> ResponseEntity.badRequest().build());
+    }*/
+
     private Optional<UserDto> createUserDto(Map<String, String> params) {
-        if(params.isEmpty() || !params.containsKey("name") || !params.containsKey("email") || !params.containsKey("role")){
+        if(params.isEmpty() || !params.containsKey("name") || !params.containsKey("email") || !params.containsKey("role") || !params.containsKey("password")) {
             return Optional.empty();
         } else {
             return Optional.of(UserDto.builder()
@@ -54,15 +62,12 @@ public class UserController {
     }
 
     private Role determineRole(String role) {
-        if (role.equals("ROLE_ADMIN")) {
-            return Role.ROLE_ADMIN;
-        } else if (role.equals("ROLE_PLAYER")) {
-            return Role.ROLE_PLAYER;
-        } else if (role.equals("ROLE_STORY_TELLER")){
-            return Role.ROLE_STORY_TELLER;
-        } else {
-            throw new IllegalArgumentException("Role not found");
-        }
+        return switch (role) {
+            case "ROLE_ADMIN" -> Role.ROLE_ADMIN;
+            case "ROLE_PLAYER" -> Role.ROLE_PLAYER;
+            case "ROLE_STORY_TELLER" -> Role.ROLE_STORY_TELLER;
+            default -> throw new IllegalArgumentException("Role not found");
+        };
     }
 
     private List<Role> determineRoles(String roles) {
