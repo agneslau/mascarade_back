@@ -9,6 +9,12 @@ import java.util.List;
 public interface UserService {
 
     List<UserDto> findAll();
-    UserDto insertUser(UserDto userDto);
+    UserDto addUser(UserDto userDto);
     UserDto updateUser(UserDto userDto);
+
+    Boolean isNameTaken(String name);
+
+    Boolean isEmailTaken(String email);
+
+    void deleteUser(String id);
 }

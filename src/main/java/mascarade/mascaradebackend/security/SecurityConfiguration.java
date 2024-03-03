@@ -33,6 +33,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/api/v1/users/**").authenticated()
                                 .requestMatchers("/api/v1/test/**").authenticated()
                                 .requestMatchers("/api/v1/auth/**").permitAll()
+                                .requestMatchers("/error").permitAll()
 
                                 )
                 .sessionManagement(sessionManagement ->
@@ -40,17 +41,6 @@ public class SecurityConfiguration {
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthentifcationFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable);
-                    //.requestMatchers("api/v1/auth/**").permitAll()
-                    //.requestMatchers("/api/v1/users/**").authenticated()
-                    //.requestMatchers(HttpMethod.POST, "/api/v1/users/**").authenticated()
-                    //.anyRequest().authenticated()
-                /*.and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthentifcationFilter, UsernamePasswordAuthenticationFilter.class);*/
-
 
         return http.build();
 
