@@ -8,6 +8,8 @@ import java.util.List;
 
 @Builder
 public record UserDto(
+
+        String id,
         String email,
         String name,
         List<Role> roles,
@@ -16,6 +18,7 @@ public record UserDto(
 
     public static UserDto fromUser(User user) {
         return UserDto.builder()
+                .id(user.id().toString())
                 .email(user.email())
                 .name(user.name())
                 .roles(user.roles())
