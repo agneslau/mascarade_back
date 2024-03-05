@@ -1,6 +1,7 @@
 package mascarade.mascaradebackend.services.impl;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import mascarade.mascaradebackend.dtos.UserDto;
 import mascarade.mascaradebackend.entities.DeletedUser;
 import mascarade.mascaradebackend.entities.User;
@@ -18,7 +19,10 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
+
+    private static final String USER_NOT_FOUND_MESSAGE = "User not found";
 
     private final UserRepository userRepository;
     private final DeletedUserRepository deletedUserRepository;
@@ -36,10 +40,12 @@ public class UserServiceImpl implements UserService {
     public UserDto addUser(UserDto userDto) {
         Optional<User> userOpt = userRepository.findByEmail(userDto.email());
         if(userOpt.isPresent()) {
+            log.error("Email already exists in database");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists in database");
         }
         Optional <User> userOpt2 = userRepository.findByName(userDto.name());
         if(userOpt2.isPresent()) {
+            log.error("Name already exists in database");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Name already exists in database");
         }
         var user = User.builder()
@@ -58,7 +64,8 @@ public class UserServiceImpl implements UserService {
             User user = this.updateUserFromDto(userOpt.get(), userDto);
             return UserDto.fromUser(userRepository.save(user));
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        log.error(USER_NOT_FOUND_MESSAGE);
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, USER_NOT_FOUND_MESSAGE);
     }
 
     @Override
@@ -80,7 +87,8 @@ public class UserServiceImpl implements UserService {
             deletedUserRepository.insert(DeletedUser.fromUser(userOpt.get()));
             userRepository.delete(userOpt.get());
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+            log.error(USER_NOT_FOUND_MESSAGE);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, USER_NOT_FOUND_MESSAGE);
         }
     }
 

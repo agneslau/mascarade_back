@@ -1,6 +1,7 @@
 package mascarade.mascaradebackend.controllers;
 
 
+import lombok.extern.slf4j.Slf4j;
 import mascarade.mascaradebackend.dtos.UserDto;
 import mascarade.mascaradebackend.security.Role;
 import mascarade.mascaradebackend.services.impl.UserServiceImpl;
@@ -24,29 +25,31 @@ import java.util.stream.Stream;
 @RestController
 @RequestMapping("/api/v1/users")
 @CrossOrigin
+@Slf4j
 public class UserController {
 
     private final UserServiceImpl userService;
 
-    public UserController(UserServiceImpl userService) {
-        this.userService = userService;
-    }
+    public UserController(UserServiceImpl userService) {this.userService = userService;}
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<List<UserDto>> getUsers(){
+        log.info("Get all users");
         return ResponseEntity.ok(userService.findAll());
     }
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+        log.info("Create user: {}", userDto);
         return ResponseEntity.ok(userService.addUser(userDto));
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable String id){
+        log.info("Delete user with id: {}", id);
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
@@ -54,7 +57,9 @@ public class UserController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<UserDto> updateUser(@PathVariable String id, @RequestBody UserDto userDto){
+        log.info("Update user with id: {}", id);
         if(!id.equals(userDto.id())) {
+            log.error("Id in path and body do not match");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id in path and body do not match");
         }
         return ResponseEntity.ok(userService.updateUser(userDto));
@@ -63,12 +68,14 @@ public class UserController {
     @GetMapping("/name/{name}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<Boolean> isNameTaken(@PathVariable String name){
+        log.info("Check if name is taken: {}", name);
         return ResponseEntity.ok(userService.isNameTaken(name));
     }
 
     @GetMapping("/email/{email}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<Boolean> isEmailTaken(@PathVariable String email){
+        log.info("Check if email is taken: {}", email);
         return ResponseEntity.ok(userService.isEmailTaken(email));
     }
 
