@@ -1,23 +1,22 @@
 package mascarade.mascaradebackend.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import mascarade.mascaradebackend.dtos.AuthenticationRequest;
 import mascarade.mascaradebackend.dtos.AuthenticationResponse;
 import mascarade.mascaradebackend.dtos.RegisterRequest;
 import mascarade.mascaradebackend.entities.User;
 import mascarade.mascaradebackend.repositories.UserRepository;
 import mascarade.mascaradebackend.security.Jwt.JwtService;
-import mascarade.mascaradebackend.security.Role;
 import mascarade.mascaradebackend.services.AuthenticationService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository repository;
@@ -34,6 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .build();
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);
+        log.info("User registered: {} with token : {}", user.id(), jwtToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
