@@ -17,4 +17,6 @@ public interface CharacterService {
     void archiveCharacter(String id);
 
     Boolean isTaken(String name, Clan clan);
+
+    List<CharacterDto> findByPlayerId(String id);
 }

@@ -20,4 +20,6 @@ public interface UserService {
     void deleteUser(String id);
 
     List<MinimalUserDto> findMinimalUsers();
+
+    MinimalUserDto findMinimalUserByEmail(String email);
 }

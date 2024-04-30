@@ -100,6 +100,17 @@ public class UserServiceImpl implements UserService {
                 .toList();
     }
 
+    @Override
+    public MinimalUserDto findMinimalUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(MinimalUserDto::fromUser)
+                .orElseThrow(() -> {
+                    log.error(USER_NOT_FOUND_MESSAGE);
+                    return new ResponseStatusException(HttpStatus.NOT_FOUND, USER_NOT_FOUND_MESSAGE);
+                });
+    }
+
+
     private User updateUserFromDto(User user, UserDto userDto) {
         return User.builder()
                 .id(user.id())

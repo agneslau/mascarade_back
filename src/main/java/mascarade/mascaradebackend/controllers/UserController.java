@@ -47,6 +47,13 @@ public class UserController {
         return ResponseEntity.ok(userService.findMinimalUsers());
     }
 
+    @GetMapping("minimal/email/{email}")
+    @PreAuthorize("hasAnyRole('ROLE_PLAYER')")
+    public ResponseEntity<MinimalUserDto> getMinimalUserByEmail(@PathVariable String email){
+        log.info("Get minimal user matching email: {}", email);
+        return ResponseEntity.ok(userService.findMinimalUserByEmail(email));
+    }
+
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
