@@ -66,7 +66,7 @@ public class CharacterController {
     @GetMapping("/isTaken")
     @PreAuthorize("hasAnyRole('ROLE_STORY_TELLER')")
     public ResponseEntity<Boolean> isTaken(@RequestParam String name, @RequestParam Clan clan){
-        log.info("Check if pair name {} and clan {} is taken: {}", name, clan );
+        log.info("Check if pair name {} and clan {} is taken", name, clan );
         return ResponseEntity.ok(characterService.isTaken(name, clan));
     }
 }
