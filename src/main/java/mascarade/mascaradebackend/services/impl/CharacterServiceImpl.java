@@ -95,4 +95,12 @@ public class CharacterServiceImpl implements CharacterService {
         Optional<Character> characterOpt = characterRepository.findByNameAndClan(name, clan);
         return characterOpt.isPresent();
     }
+
+    @Override
+    public List<CharacterDto> findByPlayerId(String id) {
+        Optional<List<Character>> charactersOpt = characterRepository.findByPlayerId(id);
+        return charactersOpt.map(characters -> characters.stream()
+                .map(CharacterDto::fromCharacter)
+                .toList()).orElseGet(List::of);
+    }
 }
