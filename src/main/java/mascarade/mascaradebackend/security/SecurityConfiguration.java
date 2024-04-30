@@ -32,6 +32,8 @@ public class SecurityConfiguration {
                         authorizeRequests
                                 .requestMatchers("/api/v1/users/**").authenticated()
                                 .requestMatchers("/api/v1/test/**").authenticated()
+                                .requestMatchers("/api/v1/characters/**").authenticated()
+                                .requestMatchers("/api/v1/influences/**").authenticated()
                                 .requestMatchers("/api/v1/auth/**").permitAll()
                                 .requestMatchers("/error").permitAll()
 

@@ -1,7 +1,9 @@
 package mascarade.mascaradebackend.controllers;
 
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import mascarade.mascaradebackend.dtos.MinimalUserDto;
 import mascarade.mascaradebackend.dtos.UserDto;
 import mascarade.mascaradebackend.security.Role;
 import mascarade.mascaradebackend.services.impl.UserServiceImpl;
@@ -26,17 +28,23 @@ import java.util.stream.Stream;
 @RequestMapping("/api/v1/users")
 @CrossOrigin
 @Slf4j
+@AllArgsConstructor
 public class UserController {
 
     private final UserServiceImpl userService;
-
-    public UserController(UserServiceImpl userService) {this.userService = userService;}
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<List<UserDto>> getUsers(){
         log.info("Get all users");
         return ResponseEntity.ok(userService.findAll());
+    }
+
+    @GetMapping("minimal")
+    @PreAuthorize("hasAnyRole('ROLE_STORY_TELLER')")
+    public ResponseEntity<List<MinimalUserDto>> getMinimalUsers(){
+        log.info("Get all minimal users");
+        return ResponseEntity.ok(userService.findMinimalUsers());
     }
 
     @PostMapping
@@ -51,7 +59,7 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable String id){
         log.info("Delete user with id: {}", id);
         userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
