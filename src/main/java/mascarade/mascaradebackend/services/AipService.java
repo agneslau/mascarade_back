@@ -12,4 +12,8 @@ public interface AipService {
     AipSessionDto addAipSession(AipSessionDto aipSessionDto);
 
     void deleteAipSession(String id);
+
+    AipSessionDto updateAipSession(AipSessionDto aipSessionDto);
+
+    List<AipSessionDto> findOpenedAipSessions();
 }

@@ -33,4 +33,15 @@ public class AipServiceImpl implements AipService {
     public void deleteAipSession(String id) {
         aipSessionRepository.deleteById(new ObjectId(id));
     }
+
+    @Override
+    public AipSessionDto updateAipSession(AipSessionDto aipSessionDto) {
+        return AipSessionDto.fromAipSession(aipSessionRepository.save(AipSession.fromAipSessionDto(aipSessionDto)));
+    }
+
+    @Override
+    public List<AipSessionDto> findOpenedAipSessions() {
+        return aipSessionRepository.findAllByIsOpen(true).stream()
+                .map(AipSessionDto::fromAipSession).toList();
+    }
 }
