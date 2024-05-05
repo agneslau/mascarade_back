@@ -19,4 +19,6 @@ public interface CharacterService {
     Boolean isTaken(String name, Clan clan);
 
     List<CharacterDto> findByPlayerId(String id);
+
+    CharacterDto findByid(String id);
 }

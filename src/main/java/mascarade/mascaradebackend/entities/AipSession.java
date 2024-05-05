@@ -20,6 +20,7 @@ public record AipSession(
 ) {
         public static AipSession fromAipSessionDto(AipSessionDto aipSessionDto){
                 return AipSession.builder()
+                        .id(new ObjectId(aipSessionDto.id()))
                         .name(aipSessionDto.name())
                         .beginDate(aipSessionDto.beginDate())
                         .endDate(aipSessionDto.endDate())

@@ -103,4 +103,14 @@ public class CharacterServiceImpl implements CharacterService {
                 .map(CharacterDto::fromCharacter)
                 .toList()).orElseGet(List::of);
     }
+
+    @Override
+    public CharacterDto findByid(String id) {
+        Optional<Character> characterOpt = characterRepository.findById(new ObjectId(id));
+        return characterOpt.map(CharacterDto::fromCharacter)
+                .orElseThrow(() -> {
+                    log.error(CHARACTER_NOT_FOUND);
+                    return new ResponseStatusException(HttpStatus.NOT_FOUND, CHARACTER_NOT_FOUND);
+                });
+    }
 }
