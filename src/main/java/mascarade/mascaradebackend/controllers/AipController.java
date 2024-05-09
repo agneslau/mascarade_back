@@ -2,6 +2,7 @@ package mascarade.mascaradebackend.controllers;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import mascarade.mascaradebackend.dtos.AipDto;
 import mascarade.mascaradebackend.dtos.AipSessionDto;
 import mascarade.mascaradebackend.services.impl.AipServiceImpl;
 import org.springframework.http.ResponseEntity;
@@ -55,11 +56,25 @@ public class AipController {
         return ResponseEntity.ok(aipService.updateAipSession(aipSessionDto));
     }
 
-    @GetMapping("/sessions/opened")
+    @GetMapping("/sessions/opened/character/{characterId}")
     @PreAuthorize("hasAnyRole('ROLE_STORY_TELLER', 'ROLE_PLAYER')")
-    public ResponseEntity<List<AipSessionDto>> getOpenedAipSessions(){
-        log.info("Get all opened AIP sessions");
-        return ResponseEntity.ok(aipService.findOpenedAipSessions());
+    public ResponseEntity<List<AipSessionDto>> getOpenedAipSessions(@PathVariable String characterId){
+        log.info("Get all opened AIP sessions fo character: {}", characterId);
+        return ResponseEntity.ok(aipService.findOpenedAipSessionsByCharacterId(characterId));
+    }
+
+    @GetMapping("/sessions/{sessionId}/character/{characterId}")
+    @PreAuthorize("hasAnyRole('ROLE_STORY_TELLER', 'ROLE_PLAYER')")
+    public ResponseEntity<AipDto> getAip(@PathVariable String sessionId, @PathVariable String characterId){
+        log.info("Get AIP for session: {} and character: {}", sessionId, characterId);
+        return ResponseEntity.ok(aipService.findAip(sessionId, characterId));
+    }
+
+    @PostMapping("/sessions/{sessionId}")
+    @PreAuthorize("hasAnyRole('ROLE_STORY_TELLER', 'ROLE_PLAYER')")
+    public ResponseEntity<AipDto> createAip(@PathVariable String sessionId, @RequestBody AipDto aipDto){
+        log.info("Create AIP for session: {} and character: {}", sessionId, aipDto.characterId());
+        return ResponseEntity.ok(aipService.addAip(aipDto, sessionId));
     }
 
 }
