@@ -9,7 +9,12 @@ public enum Asset {
     MARIONNETTISTE(2, Clan.getAllClans()),
     PARANGON(3, List.of(VENTRUE));
 
+    public final int value;
+    public final List<Clan> clans;
+
 
     Asset(int value, List<Clan> clans) {
+        this.value = value;
+        this.clans = clans;
     }
 }
