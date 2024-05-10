@@ -19,7 +19,7 @@ public record AipSessionDto(
 ) {
     public static AipSessionDto fromEntity(AipSession aipSession){
         return AipSessionDto.builder()
-                .id(aipSession.id().toHexString())
+                .id(aipSession.id().toString())
                 .name(aipSession.name())
                 .beginDate(aipSession.beginDate())
                 .endDate(aipSession.endDate())

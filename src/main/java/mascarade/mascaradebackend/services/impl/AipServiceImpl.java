@@ -30,8 +30,18 @@ public class AipServiceImpl implements AipService {
     }
 
     @Override
+    public AipSessionDto findAipSession(String id) {
+        return aipSessionRepository.findById(new ObjectId(id))
+                .map(AipSessionDto::fromEntity)
+                .orElseThrow(() -> {
+                    log.error("AIP session not found, id: {}", id);
+                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "AIP session not found");
+                });
+    }
+
+    @Override
     public AipSessionDto addAipSession(AipSessionDto aipSessionDto) {
-        return AipSessionDto.fromEntity(aipSessionRepository.insert(AipSession.fromAipSessionDto(aipSessionDto)));
+        return AipSessionDto.fromEntity(aipSessionRepository.insert(AipSession.fromAipSessionDtoToInsert(aipSessionDto)));
     }
 
     @Override
@@ -45,7 +55,10 @@ public class AipServiceImpl implements AipService {
             if(sessionDto.aips().isEmpty()){
                 aipsToSave = List.of(aipDto);
             } else {
-                aipsToSave = Stream.concat(sessionDto.aips().stream(), Stream.of(aipDto))
+                aipsToSave = Stream.concat(sessionDto.aips()
+                                .stream()
+                                .filter(aipDto2 -> !aipDto2.characterId().equals(aipDto.characterId())),
+                                Stream.of(aipDto))
                         .toList();
             }
 

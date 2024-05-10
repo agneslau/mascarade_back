@@ -34,6 +34,13 @@ public class AipController {
         return ResponseEntity.ok(aipService.findAllAipSessions());
     }
 
+    @GetMapping("/sessions/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_STORY_TELLER')")
+    public ResponseEntity<AipSessionDto> getAipSession(@PathVariable String id){
+        log.info("Get AIP session, id: {}", id);
+        return ResponseEntity.ok(aipService.findAipSession(id));
+    }
+
     @PostMapping("/sessions")
     @PreAuthorize("hasAnyRole('ROLE_STORY_TELLER')")
     public ResponseEntity<AipSessionDto> createAipSession(@RequestBody AipSessionDto aipSessionDto){

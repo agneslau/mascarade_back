@@ -39,5 +39,18 @@ public record AipSession(
                                 .toList())
                         .build();
         }
+        public static AipSession fromAipSessionDtoToInsert(AipSessionDto aipSessionDto){
+                return AipSession.builder()
+                        .name(aipSessionDto.name())
+                        .beginDate(aipSessionDto.beginDate())
+                        .endDate(aipSessionDto.endDate())
+                        .isOpen(aipSessionDto.isOpen())
+                        .isClosed(aipSessionDto.isClosed())
+                        .isRendered(aipSessionDto.isRendered())
+                        .aips(aipSessionDto.aips().stream()
+                                .map(Aip::fromDto)
+                                .toList())
+                        .build();
+        }
 
 }

@@ -10,6 +10,8 @@ import java.util.List;
 public interface AipService {
     List<AipSessionDto> findAllAipSessions();
 
+    AipSessionDto findAipSession(String id);
+
     AipSessionDto addAipSession(AipSessionDto aipSessionDto);
 
     AipDto addAip(AipDto aipDto, String sessionId);
