@@ -10,7 +10,7 @@ import mascarade.mascaradebackend.dtos.AuthenticationResponse;
 import mascarade.mascaradebackend.dtos.RegisterRequest;
 import mascarade.mascaradebackend.entities.User;
 import mascarade.mascaradebackend.repositories.UserRepository;
-import mascarade.mascaradebackend.security.Jwt.JwtService;
+import mascarade.mascaradebackend.security.jwt.JwtService;
 import mascarade.mascaradebackend.services.AuthenticationService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;

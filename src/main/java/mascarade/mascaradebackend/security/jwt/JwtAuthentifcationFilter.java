@@ -1,4 +1,4 @@
-package mascarade.mascaradebackend.security.Jwt;
+package mascarade.mascaradebackend.security.jwt;
 
 
 import jakarta.servlet.FilterChain;
@@ -49,7 +49,7 @@ public class JwtAuthentifcationFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
         } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
         }
 
 
