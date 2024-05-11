@@ -1,4 +1,4 @@
-package mascarade.mascaradebackend.security.Jwt;
+package mascarade.mascaradebackend.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
