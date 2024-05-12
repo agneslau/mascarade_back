@@ -105,7 +105,7 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public CharacterDto findByid(String id) {
+    public CharacterDto findById(String id) {
         Optional<Character> characterOpt = characterRepository.findById(new ObjectId(id));
         return characterOpt.map(CharacterDto::fromCharacter)
                 .orElseThrow(() -> {

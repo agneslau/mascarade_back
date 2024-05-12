@@ -20,5 +20,5 @@ public interface CharacterService {
 
     List<CharacterDto> findByPlayerId(String id);
 
-    CharacterDto findByid(String id);
+    CharacterDto findById(String id);
 }
