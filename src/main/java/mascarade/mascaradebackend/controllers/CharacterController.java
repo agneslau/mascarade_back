@@ -47,7 +47,7 @@ public class CharacterController {
     @PreAuthorize("hasAnyRole('ROLE_PLAYER')")
     public ResponseEntity<CharacterDto> getCharactersById(@PathVariable String id){
         log.info("Get character by id: {}", id);
-        return ResponseEntity.ok(characterService.findByid(id));
+        return ResponseEntity.ok(characterService.findById(id));
     }
 
     @PostMapping
