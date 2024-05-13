@@ -2,6 +2,7 @@ package mascarade.mascaradebackend.services.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import mascarade.mascaradebackend.dtos.MinimalUserDto;
 import mascarade.mascaradebackend.dtos.UserDto;
 import mascarade.mascaradebackend.entities.DeletedUser;
 import mascarade.mascaradebackend.entities.User;
@@ -91,6 +92,24 @@ public class UserServiceImpl implements UserService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, USER_NOT_FOUND_MESSAGE);
         }
     }
+
+    @Override
+    public List<MinimalUserDto> findMinimalUsers() {
+        return userRepository.findAll().stream()
+                .map(MinimalUserDto::fromUser)
+                .toList();
+    }
+
+    @Override
+    public MinimalUserDto findMinimalUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(MinimalUserDto::fromUser)
+                .orElseThrow(() -> {
+                    log.error(USER_NOT_FOUND_MESSAGE);
+                    return new ResponseStatusException(HttpStatus.NOT_FOUND, USER_NOT_FOUND_MESSAGE);
+                });
+    }
+
 
     private User updateUserFromDto(User user, UserDto userDto) {
         return User.builder()

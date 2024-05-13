@@ -1,5 +1,6 @@
 package mascarade.mascaradebackend.services;
 
+import mascarade.mascaradebackend.dtos.MinimalUserDto;
 import mascarade.mascaradebackend.dtos.UserDto;
 import org.springframework.stereotype.Service;
 
@@ -17,4 +18,8 @@ public interface UserService {
     Boolean isEmailTaken(String email);
 
     void deleteUser(String id);
+
+    List<MinimalUserDto> findMinimalUsers();
+
+    MinimalUserDto findMinimalUserByEmail(String email);
 }

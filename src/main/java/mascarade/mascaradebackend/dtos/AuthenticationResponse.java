@@ -15,6 +15,7 @@ import java.util.List;
 public class AuthenticationResponse {
     private String name;
     private String email;
-    private String token;
+    private String accessToken;
+    private String refreshToken;
     private List<Role> roles;
 }

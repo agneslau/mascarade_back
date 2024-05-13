@@ -1,6 +1,8 @@
 package mascarade.mascaradebackend.controllers;
 
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mascarade.mascaradebackend.dtos.AuthenticationRequest;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -34,4 +38,12 @@ public class AuthenticationController {
         log.info("Authenticate request: {}", registerRequest);
         return ResponseEntity.ok(authenticationService.authenticate(registerRequest));
     }
+
+    @PostMapping("/refresh-token")
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        log.info("Refresh token request: {}", request);
+        authenticationService.refreshToken(request, response);
+    }
+
+
 }

@@ -13,7 +13,8 @@ public record UserDto(
         String email,
         String name,
         List<Role> roles,
-        String password
+        String password,
+        List<String> charactersIds
 ) {
 
     public static UserDto fromUser(User user) {
@@ -23,6 +24,13 @@ public record UserDto(
                 .name(user.name())
                 .roles(user.roles())
                 .password(user.password())
+                .build();
+    }
+
+    public static UserDto minimalFromUser(User user) {
+        return UserDto.builder()
+                .id(user.id().toString())
+                .name(user.name())
                 .build();
     }
 }

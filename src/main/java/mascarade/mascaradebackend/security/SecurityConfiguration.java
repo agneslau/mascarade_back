@@ -2,7 +2,7 @@ package mascarade.mascaradebackend.security;
 
 
 import lombok.RequiredArgsConstructor;
-import mascarade.mascaradebackend.security.Jwt.JwtAuthentifcationFilter;
+import mascarade.mascaradebackend.security.jwt.JwtAuthentifcationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -32,6 +32,9 @@ public class SecurityConfiguration {
                         authorizeRequests
                                 .requestMatchers("/api/v1/users/**").authenticated()
                                 .requestMatchers("/api/v1/test/**").authenticated()
+                                .requestMatchers("/api/v1/characters/**").authenticated()
+                                .requestMatchers("/api/v1/influences/**").authenticated()
+                                .requestMatchers("/api/v1/aips/**").authenticated()
                                 .requestMatchers("/api/v1/auth/**").permitAll()
                                 .requestMatchers("/error").permitAll()
 

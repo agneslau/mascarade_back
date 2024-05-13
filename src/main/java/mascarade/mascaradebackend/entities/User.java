@@ -30,7 +30,10 @@ public record User(
         List<Role> roles,
 
         @Field("password")
-        String password
+        String password,
+
+        @Field("characters")
+        List<ObjectId> characters
 ) implements UserDetails {
         public static User fromUserDto(UserDto userDto) {
                 return User.builder()
@@ -38,6 +41,7 @@ public record User(
                         .name(userDto.name())
                         .roles(userDto.roles())
                         .password(userDto.password())
+                        .characters(userDto.charactersIds().stream().map(ObjectId::new).toList())
                         .build();
         }
 
