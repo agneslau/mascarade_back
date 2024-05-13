@@ -1,7 +1,12 @@
 # mascarade_back
 
 This is back-end application for Mascarade Project, for La Mascarade de Lille
-App will be run on 8080 port
+
+To be run locally, you should add src/main/resources a application.properties file containing following line :
+```
+spring.data.mongodb.uri={{ add DB URL given in Report }}
+spring.data.mongodb.database=Mascarade
+```
 
 ## Pre-requisite
 
